@@ -1,67 +1,169 @@
 <!DOCTYPE html>
 <html>
 <style>
+		body {
+			background-color: rgb(23, 25, 30);
+		}
 		h1 {
-			color: darkblue;
-			font-family: 'Verdana';
+			color: rgb(235, 240, 245);
+			font-family: 'Times New Roman';
 			text-align: center;
 		}
 		h2 {
-			color: mediumblue;
-			font-family: 'Verdana';
+			color: rgb(110,190,250);
+			font-family: 'Times New Roman';
 			text-align: center;
 		}
 		h3 {
-			color: steelblue;
-			font-family: 'verdana';
+			color: rgb(190, 220, 255);
+			font-family: 'Times New Roman';
 			text-align: center;
+			font-size: 30px;
 		}
 		p{
-			font-family: 'Verdana';
+			color: rgb(235, 240, 245);
+			font-family: 'Times New Roman';
 			text-align: center;
+			font-size: 22px;
 
-		}
-		a{
-			font-family: 'Verdana';
-			color: steelblue;
-			text-align: center;
-			font-size: 22;
 		}
 		#link {
-			font-family: 'Verdana';
+			font-family: 'Times New Roman';
 			color: steelblue;
 			text-align: center;
 			font-size: 22;
 		}
-		#centered {
-			text-align: center;
+		a {
+			font-family: 'Times New Roman';
+			color: steelblue;
+			text-decoration: underline rgb(30, 255, 210);
 		}
-	</style>	
+		#super {
+			font-family: 'Times New Roman';
+			color: rgb(190, 220, 255);
+			font-size: 50px;
+
+			-webkit-text-stroke-width: 1px;
+    		-webkit-text-stroke-color: rgb(205, 240, 245); /* Outline color */
+		}
+		#StandardBorder {
+			border: 2px solid rgb(190, 220, 255);
+			width: 60%;
+			margin: 0 auto;
+		}
+
+</style>	
 <head>
-<title>Profile Website</title>
+<title>Projects</title>
+<a href="index.html">homepage</a>
+
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
+  <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
+  <script language="javascript" type="text/javascript" src="FirstTime.js"></script>
+  <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
 </head>
+<script>
+	/**
+	 * p5 creates the canvas in setup(), which runs after DOMContentLoaded.
+	 * Wait until .p5Canvas exists, then run callback(canvas).
+	 */
+	function whenP5CanvasReady(callback, options = {}) {
+		const { timeoutMs = 15000 } = options;
+		const pick = () => document.querySelector(".p5Canvas");
+
+		const existing = pick();
+		if (existing) {
+			callback(existing);
+			return;
+		}
+
+		const obs = new MutationObserver(() => {
+			const el = pick();
+			if (el) {
+				obs.disconnect();
+				callback(el);
+			}
+		});
+		obs.observe(document.documentElement, { childList: true, subtree: true });
+
+		const deadline = Date.now() + timeoutMs;
+		(function poll() {
+			const el = pick();
+			if (el) {
+				obs.disconnect();
+				callback(el);
+				return;
+			}
+			if (Date.now() < deadline) {
+				requestAnimationFrame(poll);
+			} else {
+				obs.disconnect();
+				console.warn("whenP5CanvasReady: no .p5Canvas within timeout");
+			}
+		})();
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+		whenP5CanvasReady((canvas) => {
+			const canvasArray = document.getElementsByClassName("p5Canvas");
+			console.log("logging 1 by 1");
+			for (let i = 0; i < canvasArray.length; i++) {
+				console.log(canvasArray[i]);
+			}
+			console.log(canvasArray);
+
+			// Single canvas: fixed layer so it does not scroll with the page
+			const newDiv = document.createElement("div");
+			newDiv.setAttribute("aria-hidden", "true");
+			newDiv.style.cssText =
+				"position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; margin: 0; padding: 0;";
+
+			canvas.style.cssText =
+				"display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none;";
+
+			const ctx = canvas.getContext("2d");
+			// ctx is ready when you need 2D drawing from outside p5
+
+			document.body.prepend(newDiv);
+			console.log(newDiv);
+			newDiv.appendChild(canvas);
+			
+		
+		});
+	});
+</script>	
 <body>
-<h1> Projects</h1>
-<h3> I have worked on a variety of projects, ranging from useful, to technical, to 5 hours of work for a 5 second joke. Most of my projects/work is done in Java. <h3>
-<h2>Desmos Flappy Bird</h2>
+<div style="border-bottom: 3px solid rgb(190, 220, 255); border-top: 3px solid rgb(190, 220, 255)">
 
-<div id="centered">
-
+<h1 id="super">Projects</h1>
 </div>
+<div id="centered">
+<h2> I have worked on a variety of projects, ranging from useful, to technical, to 5 hours of work for a 5 second joke. Most of my projects/work is done in Java. <h2>
+</div>
+<h3>Desmos Flappy Bird</h3>
+<div id="StandardBorder">
 <p>You can "code" in desmos graphing calculator. I submitted this to the global desmos art expo, and didn't win! I had no reason to do this other than my math teacher mentioned this followed by, and I quote "Now I am not into this coding stuff, but if you want to try, go for it."</p>
+</div>
 <div id="link">
 	<p>Open Graph in Desmos</p>
 	<a href="https://www.desmos.com/calculator/owghpvsjdu">
-		<img src="FlappybirdScreenshot.png" alt="Image of the graph" width="580 " height="284"> </img>
+		<img src="Images/FlappybirdScreenshot.png" alt="Image of the graph" width="580px" height="284px"> </img>
 	</a>
 </div>
-<h2>USACO</h2>
+<h3>USACO</h3>
+<div id="StandardBorder">
 <p>I am working on USA Computing Olympiad practices problems. You can see my source code of  varying elegance and efficiencies</p>
-<h3>Except I don't know how I should link source code</h3>
+</div>
+<h2>Except I don't know how I should link source code</h2>
 
-<h2>Roblox Studio Projects</h2>
+<h3>Roblox Studio Projects</h3>
+<div id="StandardBorder">
 <p> I have done a VERY TINY amount of game development. My few projects, more accurately named monstrocities, can be viewed below. I made many of these with friends. Roblox studio uses lua</p>
-<h3>Except I also don't know how I should display these</h3>
+</div>
+<h2>Except I also don't know how I should display these</h2>
 
 </body>
 </html>
